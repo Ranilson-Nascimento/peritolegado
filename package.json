@@ -1,0 +1,44 @@
+{
+  "name": "peritolegado",
+  "version": "1.0.0",
+  "description": "CLI para testar conexões com bancos de dados legados",
+  "main": "dist/cli.js",
+  "bin": {
+    "perito-cli": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli.ts",
+    "start": "node dist/cli.js",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "database",
+    "legacy",
+    "cli",
+    "mysql",
+    "postgresql",
+    "oracle",
+    "sqlserver",
+    "mongodb",
+    "firebird"
+  ],
+  "author": "Ranilson Nascimento",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^24.2.0",
+    "commander": "^14.0.0",
+    "dotenv": "^17.2.1",
+    "mongodb": "^6.18.0",
+    "mssql": "^11.0.1",
+    "mysql2": "^3.14.3",
+    "node-firebird-driver-native": "^3.2.2",
+    "oracledb": "^6.9.0",
+    "pg": "^8.16.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "winston": "^3.17.0"
+  }
+}
