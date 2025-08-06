@@ -1,48 +1,99 @@
 {
   "name": "peritolegado",
-  "version": "1.0.0",
-  "description": "CLI para testar conexões com bancos de dados legados",
+  "version": "2.0.0",
+  "description": "🎯 Sistema profissional de migração entre bancos de dados com interface web inteligente - Especializado em Paradox/SQLite → Firebird",
   "main": "dist/cli.js",
   "bin": {
     "perito-cli": "dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/cli.ts",
-    "start": "node dist/cli.js",
+    "dev": "nodemon --exec ts-node src/web/enhanced-server.ts",
+    "dev:cli": "ts-node src/cli.ts",
+    "dev:web": "nodemon --exec ts-node src/web/enhanced-server.ts",
+    "dev:watch": "nodemon --watch src --ext ts,js,html,css --exec ts-node src/web/enhanced-server.ts",
+    "web": "tsc && node dist/web/enhanced-server.js",
+    "mapping": "tsc && node dist/web/mapping-server.js",
+    "start": "node dist/web/enhanced-server.js",
     "clean": "rimraf dist",
-    "prebuild": "npm run clean",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"🧪 Testes em desenvolvimento - use npm run dev para testar a interface\" && exit 1",
+    "test:unit": "echo \"🔬 Testes unitários em desenvolvimento\"",
+    "test:integration": "echo \"🔗 Testes de integração em desenvolvimento\"",
+    "test:e2e": "echo \"🌐 Testes E2E em desenvolvimento\"",
+    "lint": "echo \"📝 Linting em desenvolvimento\"",
+    "format": "echo \"✨ Formatação em desenvolvimento\""
   },
   "keywords": [
     "database",
-    "legacy",
+    "migration",
+    "legacy-systems",
+    "paradox",
+    "sqlite",
+    "firebird",
+    "web-interface",
+    "intelligent-mapping",
+    "drag-drop",
     "cli",
-    "mysql",
-    "postgresql",
-    "oracle",
-    "sqlserver",
-    "mongodb",
-    "firebird"
+    "typescript",
+    "real-time",
+    "websocket",
+    "data-conversion",
+    "automated-migration"
   ],
-  "author": "Ranilson Nascimento",
+  "author": {
+    "name": "Ranilson Nascimento",
+    "email": "ranilson.nascimento@gmail.com",
+    "url": "https://github.com/Ranilson-Nascimento"
+  },
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ranilson-Nascimento/peritolegado.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ranilson-Nascimento/peritolegado/issues"
+  },
+  "homepage": "https://github.com/Ranilson-Nascimento/peritolegado#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "files": [
+    "dist",
+    "web",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md"
+  ],
   "dependencies": {
     "@types/node": "^24.2.0",
+    "@types/sqlite3": "^3.1.11",
+    "body-parser": "^2.2.0",
     "commander": "^14.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.1",
+    "express": "^5.1.0",
     "mongodb": "^6.18.0",
     "mssql": "^11.0.1",
+    "multer": "^2.0.2",
     "mysql2": "^3.14.3",
+    "node-firebird": "^1.1.9",
     "node-firebird-driver-native": "^3.2.2",
+    "odbc": "^2.4.9",
     "oracledb": "^6.9.0",
     "pg": "^8.16.3",
-    "ts-node": "^10.9.2",
+    "socket.io": "^4.8.1",
+    "sqlite3": "^5.1.7",
     "typescript": "^5.9.2",
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
     "@types/pg": "^8.15.5",
-    "rimraf": "^6.0.1"
+    "nodemon": "^3.1.10",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2"
   }
 }
