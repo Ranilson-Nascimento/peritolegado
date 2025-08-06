@@ -104,6 +104,25 @@ Thumbs.db
 *.swo
 *~
 
+# Project specific
+*.db
+*.sqlite
+*.sqlite3
+migration*.log
+test-*
+*test.*
+*.tmp
+
+# Database files
+*.fdb
+*.gdb
+*.px
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
 # TypeScript
 *.tsbuildinfo
 
