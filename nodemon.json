@@ -1,0 +1,24 @@
+{
+  "watch": [
+    "src",
+    "web"
+  ],
+  "ext": "ts,js,html,css,json",
+  "ignore": [
+    "node_modules",
+    "dist",
+    "*.test.ts",
+    "*.test.js",
+    ".git"
+  ],
+  "exec": "ts-node src/web/enhanced-server.ts",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": 1000,
+  "verbose": true,
+  "colours": true,
+  "legacyWatch": false,
+  "restartable": "rs",
+  "spawn": true
+}
