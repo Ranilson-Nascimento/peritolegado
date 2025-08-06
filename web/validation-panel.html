@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Painel de Validações - Perito Legado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-brand {
+            color: white;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.3);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                justify-content: center;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .validation-panel {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .panel-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-content {
+            padding: 30px;
+        }
+
+        .validation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .validation-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .validation-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .validation-card.success {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .validation-card.error {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .validation-card.warning {
+            border-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .validation-card h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .validation-card.success h3 {
+            color: #155724;
+        }
+
+        .validation-card.error h3 {
+            color: #721c24;
+        }
+
+        .validation-card.warning h3 {
+            color: #856404;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #212529;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-success {
+            background: #28a745;
+        }
+
+        .status-error {
+            background: #dc3545;
+        }
+
+        .status-warning {
+            background: #ffc107;
+        }
+
+        .status-pending {
+            background: #6c757d;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .test-result {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #6c757d;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .test-result.success {
+            border-left-color: #28a745;
+            background: #f0fff4;
+            color: #155724;
+        }
+
+        .test-result.error {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+            color: #721c24;
+        }
+
+        .test-result.warning {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+            color: #856404;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .validation-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .log-container {
+            background: #1a202c;
+            color: #a0aec0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .log-info {
+            background: rgba(102, 126, 234, 0.1);
+            color: #90cdf4;
+        }
+
+        .log-success {
+            background: rgba(72, 187, 120, 0.1);
+            color: #9ae6b4;
+        }
+
+        .log-error {
+            background: rgba(245, 101, 101, 0.1);
+            color: #feb2b2;
+        }
+
+        .log-warning {
+            background: rgba(237, 137, 54, 0.1);
+            color: #f6ad55;
+        }
+
+        @media (max-width: 768px) {
+            .validation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Bar -->
+        <div class="nav-bar">
+            <div class="nav-brand">
+                <span>🎯</span>
+                <span>Perito Legado</span>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">
+                    <span>🚀</span>
+                    <span>Migração Inteligente</span>
+                </a>
+                <a href="/validation-panel.html" class="nav-link active">
+                    <span>🧪</span>
+                    <span>Validações</span>
+                </a>
+                <a href="/dashboard.html" class="nav-link">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="header">
+            <h1>🧪 Painel de Validações</h1>
+            <p>Sistema de Testes e Validações - Perito Legado</p>
+        </div>
+
+        <!-- Painel de Validação de Conexões -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <span>🔌</span>
+                <span>Validação de Conexões</span>
+            </div>
+            <div class="panel-content">
+                <div class="validation-grid">
+                    <div class="validation-card" id="paradox-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="paradox-status"></span>
+                            📊 Conexão Paradox
+                        </h3>
+                        <p>Validar conectividade com bancos Paradox (.db, .pdx, .px)</p>
+                        <button class="btn" onclick="validateParadoxConnection()">
+                            🧪 Testar Paradox
+                        </button>
+                        <div class="test-result" id="paradox-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="sqlite-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="sqlite-status"></span>
+                            🗃️ Conexão SQLite
+                        </h3>
+                        <p>Validar conectividade com bancos SQLite (.db, .sqlite, .sqlite3)</p>
+                        <button class="btn" onclick="validateSQLiteConnection()">
+                            🧪 Testar SQLite
+                        </button>
+                        <div class="test-result" id="sqlite-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="firebird-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="firebird-status"></span>
+                            🔥 Conexão Firebird
+                        </h3>
+                        <p>Validar conectividade com bancos Firebird (.fdb, .gdb)</p>
+                        <button class="btn" onclick="validateFirebirdConnection()">
+                            🧪 Testar Firebird
+                        </button>
+                        <div class="test-result" id="firebird-result" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Validação de Interface -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <span>🎯</span>
+                <span>Validação de Interface</span>
+            </div>
+            <div class="panel-content">
+                <div class="validation-grid">
+                    <div class="validation-card" id="ui-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="ui-status"></span>
+                            🖼️ Interface Principal
+                        </h3>
+                        <p>Validar elementos da interface e funcionamento</p>
+                        <button class="btn" onclick="validateMainInterface()">
+                            🧪 Testar Interface
+                        </button>
+                        <div class="test-result" id="ui-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="file-dialog-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="dialog-status"></span>
+                            📁 Seletor de Arquivos
+                        </h3>
+                        <p>Validar funcionamento do seletor nativo de arquivos</p>
+                        <button class="btn" onclick="validateFileDialog()">
+                            🧪 Testar Seletor
+                        </button>
+                        <div class="test-result" id="dialog-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="websocket-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="websocket-status"></span>
+                            🔌 WebSocket
+                        </h3>
+                        <p>Validar conexão WebSocket em tempo real</p>
+                        <button class="btn" onclick="validateWebSocket()">
+                            🧪 Testar WebSocket
+                        </button>
+                        <div class="test-result" id="websocket-result" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Validação de Sistema -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <span>⚙️</span>
+                <span>Validação de Sistema</span>
+            </div>
+            <div class="panel-content">
+                <div class="validation-grid">
+                    <div class="validation-card" id="server-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="server-status"></span>
+                            🖥️ Servidor Backend
+                        </h3>
+                        <p>Validar status e funcionamento do servidor</p>
+                        <button class="btn" onclick="validateServer()">
+                            🧪 Testar Servidor
+                        </button>
+                        <div class="test-result" id="server-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="endpoints-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="endpoints-status"></span>
+                            🌐 APIs/Endpoints
+                        </h3>
+                        <p>Validar funcionamento de todas as APIs</p>
+                        <button class="btn" onclick="validateEndpoints()">
+                            🧪 Testar APIs
+                        </button>
+                        <div class="test-result" id="endpoints-result" style="display: none;"></div>
+                    </div>
+
+                    <div class="validation-card" id="dependencies-validation">
+                        <h3>
+                            <span class="status-indicator status-pending" id="deps-status"></span>
+                            📦 Dependências
+                        </h3>
+                        <p>Validar instalação e versão das dependências</p>
+                        <button class="btn" onclick="validateDependencies()">
+                            🧪 Testar Dependências
+                        </button>
+                        <div class="test-result" id="deps-result" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles Globais -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <span>🎮</span>
+                <span>Controles de Validação</span>
+            </div>
+            <div class="panel-content">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="runAllValidations()">
+                        🚀 Executar Todas as Validações
+                    </button>
+                    <button class="btn btn-warning" onclick="clearAllResults()">
+                        🗑️ Limpar Resultados
+                    </button>
+                    <button class="btn btn-info" onclick="exportResults()">
+                        📄 Exportar Relatório
+                    </button>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="global-progress" style="width: 0%"></div>
+                </div>
+
+                <div class="validation-summary">
+                    <h3 style="text-align: center; margin-bottom: 20px; color: #495057;">📊 Resumo das Validações</h3>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-tests">0</div>
+                            <div class="stat-label">Total de Testes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="passed-tests" style="color: #28a745;">0</div>
+                            <div class="stat-label">Aprovados</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="failed-tests" style="color: #dc3545;">0</div>
+                            <div class="stat-label">Falharam</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="warning-tests" style="color: #ffc107;">0</div>
+                            <div class="stat-label">Avisos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="pending-tests" style="color: #6c757d;">9</div>
+                            <div class="stat-label">Pendentes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log de Execução -->
+        <div class="validation-panel">
+            <div class="panel-header">
+                <span>📝</span>
+                <span>Log de Execução</span>
+                <button class="btn" onclick="clearLogs()" style="margin-left: auto; background: rgba(255,255,255,0.2);">
+                    🗑️ Limpar
+                </button>
+            </div>
+            <div class="panel-content">
+                <div class="log-container" id="validation-log">
+                    <div class="log-entry log-info">[SISTEMA] Painel de validações inicializado</div>
+                    <div class="log-entry log-info">[INFO] 9 testes disponíveis para execução</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Conectar ao WebSocket
+        const socket = io();
+        
+        // Estado das validações
+        let validationResults = {};
+        let testStats = {
+            total: 9,
+            passed: 0,
+            failed: 0,
+            warning: 0,
+            pending: 9
+        };
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            logMessage('SISTEMA', 'Painel de validações carregado', 'info');
+            updateStats();
+        });
+
+        // Função para logar mensagens
+        function logMessage(category, message, type = 'info') {
+            const logContainer = document.getElementById('validation-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${timestamp}] [${category}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // Função para atualizar estatísticas
+        function updateStats() {
+            document.getElementById('total-tests').textContent = testStats.total;
+            document.getElementById('passed-tests').textContent = testStats.passed;
+            document.getElementById('failed-tests').textContent = testStats.failed;
+            document.getElementById('warning-tests').textContent = testStats.warning;
+            document.getElementById('pending-tests').textContent = testStats.pending;
+            
+            const progress = ((testStats.passed + testStats.failed + testStats.warning) / testStats.total) * 100;
+            document.getElementById('global-progress').style.width = progress + '%';
+        }
+
+        // Função para mostrar resultado de teste
+        function showTestResult(testId, status, message, details = '') {
+            const statusElement = document.getElementById(testId + '-status');
+            const resultElement = document.getElementById(testId + '-result');
+            const cardElement = document.getElementById(testId + '-validation');
+            
+            // Atualizar status visual
+            statusElement.className = `status-indicator status-${status}`;
+            resultElement.className = `test-result ${status}`;
+            resultElement.innerHTML = `<strong>${message}</strong>${details ? '<br>' + details : ''}`;
+            resultElement.style.display = 'block';
+            
+            // Atualizar card
+            cardElement.className = `validation-card ${status}`;
+            
+            // Atualizar estatísticas
+            if (validationResults[testId] !== status) {
+                if (validationResults[testId]) {
+                    testStats[validationResults[testId]]--;
+                } else {
+                    testStats.pending--;
+                }
+                testStats[status]++;
+                validationResults[testId] = status;
+                updateStats();
+            }
+            
+            logMessage(testId.toUpperCase(), message, status);
+        }
+
+        // === VALIDAÇÕES DE CONEXÃO ===
+        
+        async function validateParadoxConnection() {
+            logMessage('PARADOX', 'Iniciando validação de conexão Paradox...', 'info');
+            
+            try {
+                const response = await fetch('/api/validate-paradox', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ testMode: true })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showTestResult('paradox', 'success', 'Conexão Paradox validada com sucesso', 
+                                 `Driver disponível: ${result.driverAvailable ? 'Sim' : 'Não'}`);
+                } else {
+                    showTestResult('paradox', 'error', 'Falha na validação Paradox', result.error);
+                }
+            } catch (error) {
+                showTestResult('paradox', 'error', 'Erro na validação Paradox', error.message);
+            }
+        }
+        
+        async function validateSQLiteConnection() {
+            logMessage('SQLITE', 'Iniciando validação de conexão SQLite...', 'info');
+            
+            try {
+                const response = await fetch('/api/validate-sqlite', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ testMode: true })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showTestResult('sqlite', 'success', 'Conexão SQLite validada com sucesso', 
+                                 `Versão: ${result.version || 'N/A'}`);
+                } else {
+                    showTestResult('sqlite', 'error', 'Falha na validação SQLite', result.error);
+                }
+            } catch (error) {
+                showTestResult('sqlite', 'error', 'Erro na validação SQLite', error.message);
+            }
+        }
+        
+        async function validateFirebirdConnection() {
+            logMessage('FIREBIRD', 'Iniciando validação de conexão Firebird...', 'info');
+            
+            try {
+                const response = await fetch('/api/validate-firebird', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ testMode: true })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showTestResult('firebird', 'success', 'Conexão Firebird validada com sucesso', 
+                                 `Versão do driver: ${result.driverVersion || 'N/A'}`);
+                } else {
+                    showTestResult('firebird', 'error', 'Falha na validação Firebird', result.error);
+                }
+            } catch (error) {
+                showTestResult('firebird', 'error', 'Erro na validação Firebird', error.message);
+            }
+        }
+
+        // === VALIDAÇÕES DE INTERFACE ===
+        
+        function validateMainInterface() {
+            logMessage('UI', 'Validando interface principal...', 'info');
+            
+            try {
+                // Verificar se consegue acessar a página principal
+                fetch('/intelligent-mapping.html')
+                    .then(response => {
+                        if (response.ok) {
+                            showTestResult('ui', 'success', 'Interface principal acessível', 
+                                         'Página carregada corretamente');
+                        } else {
+                            showTestResult('ui', 'error', 'Interface principal inacessível', 
+                                         `Status: ${response.status}`);
+                        }
+                    })
+                    .catch(error => {
+                        showTestResult('ui', 'error', 'Erro ao acessar interface', error.message);
+                    });
+                
+            } catch (error) {
+                showTestResult('ui', 'error', 'Erro na validação da interface', error.message);
+            }
+        }
+        
+        async function validateFileDialog() {
+            logMessage('DIALOG', 'Validando seletor de arquivos...', 'info');
+            
+            try {
+                const response = await fetch('/api/open-file-dialog', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        type: 'sqlite',
+                        testMode: true 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success || result.testMode) {
+                    showTestResult('file-dialog', 'success', 'Seletor de arquivos funcionando', 
+                                 'API responde corretamente');
+                } else {
+                    showTestResult('file-dialog', 'warning', 'Seletor com limitações', 
+                                 result.error || 'Funcionamento parcial');
+                }
+            } catch (error) {
+                showTestResult('file-dialog', 'error', 'Erro no seletor de arquivos', error.message);
+            }
+        }
+        
+        function validateWebSocket() {
+            logMessage('WEBSOCKET', 'Validando conexão WebSocket...', 'info');
+            
+            if (socket.connected) {
+                showTestResult('websocket', 'success', 'WebSocket conectado', 
+                             `ID: ${socket.id}`);
+            } else {
+                showTestResult('websocket', 'error', 'WebSocket desconectado', 
+                             'Verificar conexão com servidor');
+            }
+        }
+
+        // === VALIDAÇÕES DE SISTEMA ===
+        
+        async function validateServer() {
+            logMessage('SERVER', 'Validando servidor backend...', 'info');
+            
+            try {
+                const response = await fetch('/api/health');
+                const result = await response.json();
+                
+                if (response.ok && result.status === 'ok') {
+                    showTestResult('server', 'success', 'Servidor funcionando', 
+                                 `Uptime: ${result.uptime || 'N/A'}`);
+                } else {
+                    showTestResult('server', 'warning', 'Servidor com problemas', 
+                                 JSON.stringify(result));
+                }
+            } catch (error) {
+                showTestResult('server', 'error', 'Servidor inacessível', error.message);
+            }
+        }
+        
+        async function validateEndpoints() {
+            logMessage('ENDPOINTS', 'Validando APIs/Endpoints...', 'info');
+            
+            const endpoints = [
+                '/api/health',
+                '/api/open-file-dialog',
+                '/api/test-connection',
+                '/api/auto-detect-enhanced'
+            ];
+            
+            let successCount = 0;
+            let totalCount = endpoints.length;
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ testMode: true })
+                    });
+                    
+                    if (response.status !== 404) {
+                        successCount++;
+                    }
+                } catch (error) {
+                    // Endpoint pode não estar disponível
+                }
+            }
+            
+            const percentage = (successCount / totalCount) * 100;
+            
+            if (percentage >= 80) {
+                showTestResult('endpoints', 'success', 'APIs funcionando', 
+                             `${successCount}/${totalCount} endpoints ativos`);
+            } else if (percentage >= 50) {
+                showTestResult('endpoints', 'warning', 'APIs parcialmente funcionando', 
+                             `${successCount}/${totalCount} endpoints ativos`);
+            } else {
+                showTestResult('endpoints', 'error', 'APIs com problemas', 
+                             `${successCount}/${totalCount} endpoints ativos`);
+            }
+        }
+        
+        async function validateDependencies() {
+            logMessage('DEPS', 'Validando dependências...', 'info');
+            
+            try {
+                const response = await fetch('/api/system-info');
+                const result = await response.json();
+                
+                if (result.success) {
+                    showTestResult('dependencies', 'success', 'Dependências OK', 
+                                 `Node.js: ${result.nodeVersion || 'N/A'}`);
+                } else {
+                    showTestResult('dependencies', 'warning', 'Dependências parciais', 
+                                 'Algumas dependências podem estar faltando');
+                }
+            } catch (error) {
+                showTestResult('dependencies', 'error', 'Erro ao validar dependências', error.message);
+            }
+        }
+
+        // === CONTROLES GLOBAIS ===
+        
+        async function runAllValidations() {
+            logMessage('SISTEMA', 'Executando todas as validações...', 'info');
+            
+            // Resetar resultados
+            clearAllResults();
+            
+            // Executar todas as validações em sequência
+            await validateParadoxConnection();
+            await validateSQLiteConnection();
+            await validateFirebirdConnection();
+            validateMainInterface();
+            await validateFileDialog();
+            validateWebSocket();
+            await validateServer();
+            await validateEndpoints();
+            await validateDependencies();
+            
+            logMessage('SISTEMA', 'Todas as validações executadas', 'success');
+        }
+        
+        function clearAllResults() {
+            validationResults = {};
+            testStats = {
+                total: 9,
+                passed: 0,
+                failed: 0,
+                warning: 0,
+                pending: 9
+            };
+            
+            // Limpar resultados visuais
+            document.querySelectorAll('.test-result').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.status-indicator').forEach(el => {
+                el.className = 'status-indicator status-pending';
+            });
+            
+            document.querySelectorAll('.validation-card').forEach(el => {
+                el.className = 'validation-card';
+            });
+            
+            updateStats();
+            logMessage('SISTEMA', 'Resultados limpos', 'info');
+        }
+        
+        function clearLogs() {
+            const logContainer = document.getElementById('validation-log');
+            logContainer.innerHTML = '<div class="log-entry log-info">[SISTEMA] Log limpo</div>';
+        }
+        
+        function exportResults() {
+            const report = {
+                timestamp: new Date().toISOString(),
+                stats: testStats,
+                results: validationResults
+            };
+            
+            const dataStr = JSON.stringify(report, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `validacao_perito_legado_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            
+            logMessage('SISTEMA', 'Relatório exportado', 'success');
+        }
+
+        // Listeners do WebSocket
+        socket.on('validation-result', (data) => {
+            showTestResult(data.testId, data.status, data.message, data.details);
+        });
+
+        socket.on('connect', () => {
+            logMessage('WEBSOCKET', 'Conectado ao servidor', 'success');
+        });
+
+        socket.on('disconnect', () => {
+            logMessage('WEBSOCKET', 'Desconectado do servidor', 'warning');
+        });
+    </script>
+</body>
+</html>

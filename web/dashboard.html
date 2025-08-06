@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Perito Legado - Sistema de Migração</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+        }
+
+        .navigation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            flex: 1;
+            align-content: start;
+        }
+
+        .nav-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .nav-card-header {
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .nav-card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .nav-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .nav-card-description {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .nav-card-content {
+            padding: 25px;
+        }
+
+        .nav-card-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .nav-card-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #495057;
+        }
+
+        .nav-card-features li::before {
+            content: '✓';
+            background: #28a745;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .nav-card-action {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-card-action:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            transform: translateY(-2px);
+        }
+
+        .nav-card.primary {
+            grid-column: span 2;
+        }
+
+        .nav-card.primary .nav-card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-card.primary .nav-card-title {
+            color: white;
+        }
+
+        .nav-card.primary .nav-card-description {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-card.success .nav-card-action {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .nav-card.warning .nav-card-action {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: #212529;
+        }
+
+        .nav-card.info .nav-card-action {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+
+        .stats-bar {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .quick-actions {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-actions h3 {
+            color: white;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-action-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-btn i {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-card.primary {
+                grid-column: span 1;
+            }
+            
+            .navigation-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .navigation-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <span>🎯</span>
+                <span>Perito Legado</span>
+                <span>🚀</span>
+            </h1>
+            <p>Sistema Profissional de Migração entre Bancos de Dados</p>
+            <div class="subtitle">
+                Paradox • SQLite → Firebird | Migração Inteligente e Automatizada
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Tipos de Banco Suportados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Registros Migrados</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Disponibilidade</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Precisão dos Dados</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-grid">
+            <!-- Migração Inteligente - Destaque Principal -->
+            <div class="nav-card primary" onclick="navigateTo('/')">>
+                <div class="nav-card-header">
+                    <div class="nav-card-icon">🎯</div>
+                    <div class="nav-card-title">Migração Inteligente</div>
+                    <div class="nav-card-description">Sistema principal com mapeamento automático e interface avançada</div>
+                </div>
+                <div class="nav-card-content">
+                    <ul class="nav-card-features">
+                        <li>Mapeamento automático de tabelas e campos</li>
+                        <li>Interface visual drag-and-drop</li>
+                        <li>Suporte para Paradox e SQLite → Firebird</li>
+                        <li>Validação automática de dados</li>
+                        <li>Monitoramento em tempo real</li>
+                        <li>Retry automático em caso de erro</li>
+                    </ul>
+                    <button class="nav-card-action">
+                        <span>🚀</span>
+                        <span>Iniciar Migração Inteligente</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Painel de Validações -->
+            <div class="nav-card success" onclick="navigateTo('/validation-panel.html')">
+                <div class="nav-card-header">
+                    <div class="nav-card-icon">🧪</div>
+                    <div class="nav-card-title">Painel de Validações</div>
+                    <div class="nav-card-description">Testes completos de conectividade e funcionamento</div>
+                </div>
+                <div class="nav-card-content">
+                    <ul class="nav-card-features">
+                        <li>Validação de conexões de banco</li>
+                        <li>Teste de interfaces e APIs</li>
+                        <li>Verificação de dependências</li>
+                        <li>Relatórios detalhados</li>
+                        <li>Diagnóstico automático</li>
+                    </ul>
+                    <button class="nav-card-action">
+                        <span>🔍</span>
+                        <span>Executar Validações</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Documentação -->
+            <div class="nav-card warning" onclick="window.open('https://github.com/Ranilson-Nascimento/peritolegado', '_blank')">
+                <div class="nav-card-header">
+                    <div class="nav-card-icon">📚</div>
+                    <div class="nav-card-title">Documentação</div>
+                    <div class="nav-card-description">Guias, tutoriais e referência técnica</div>
+                </div>
+                <div class="nav-card-content">
+                    <ul class="nav-card-features">
+                        <li>Manual de instalação</li>
+                        <li>Guias de migração</li>
+                        <li>Exemplos práticos</li>
+                        <li>Troubleshooting</li>
+                        <li>API Reference</li>
+                    </ul>
+                    <button class="nav-card-action">
+                        <span>📖</span>
+                        <span>Ver Documentação</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <h3>🚀 Ações Rápidas</h3>
+            <div class="quick-actions-grid">
+                <button class="quick-action-btn" onclick="quickAction('test-connections')">
+                    <span>🔌</span>
+                    <span>Testar Conexões</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('auto-detect')">
+                    <span>🔍</span>
+                    <span>Auto-detectar Bancos</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('backup')">
+                    <span>💾</span>
+                    <span>Backup Segurança</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('logs')">
+                    <span>📝</span>
+                    <span>Ver Logs</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('settings')">
+                    <span>⚙️</span>
+                    <span>Configurações</span>
+                </button>
+                <button class="quick-action-btn" onclick="quickAction('support')">
+                    <span>🆘</span>
+                    <span>Suporte</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Perito Legado - Sistema de Migração de Bancos de Dados</p>
+            <p>Desenvolvido para migração segura e eficiente de dados legados</p>
+        </div>
+    </div>
+
+    <script>
+        // Função para navegar entre páginas
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        // Ações rápidas
+        function quickAction(action) {
+            switch(action) {
+                case 'test-connections':
+                    navigateTo('/validation-panel.html#connections');
+                    break;
+                case 'auto-detect':
+                    navigateTo('/#auto-detect');
+                    break;
+                case 'backup':
+                    alert('🚧 Funcionalidade de backup em desenvolvimento');
+                    break;
+                case 'logs':
+                    window.open('/api/logs', '_blank');
+                    break;
+                case 'settings':
+                    alert('🚧 Painel de configurações em desenvolvimento');
+                    break;
+                case 'support':
+                    window.open('mailto:suporte@peritolegado.com', '_blank');
+                    break;
+            }
+        }
+
+        // Verificar status do servidor
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('/api/health');
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    console.log('✅ Servidor online:', data.uptime);
+                }
+            } catch (error) {
+                console.error('❌ Servidor offline');
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerStatus();
+            
+            // Animação de entrada
+            const cards = document.querySelectorAll('.nav-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey) {
+                switch(e.key) {
+                    case '1':
+                        e.preventDefault();
+                        navigateTo('/');
+                        break;
+                    case '2':
+                        e.preventDefault();
+                        navigateTo('/validation-panel.html');
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        navigateTo('/index.html');
+                        break;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
